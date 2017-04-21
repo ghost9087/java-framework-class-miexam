@@ -10,11 +10,19 @@ import org.springframework.context.annotation.Configuration;
 public class DaoFactory {
     @Bean
     public ProductDao productDao() {
-        return new ProductDao(connectionMaker());
+        ProductDao productDao = new ProductDao();
+        productDao.setConnectionMaker(connectionMaker());
+
+        return productDao;
     }
 
     @Bean
     public ConnectionMaker connectionMaker() {
-        return new JejuConnectionMaker();
+        JejuConnectionMaker jejuConnectionMaker = new JejuConnectionMaker();
+        jejuConnectionMaker.setDriverClass("com.mysql.jdbc.Driver");
+        jejuConnectionMaker.setUrl("jdbc:mysql://117.17.102.106/jeju");
+        jejuConnectionMaker.setId("root");
+        jejuConnectionMaker.setPassword("1234");
+        return  jejuConnectionMaker;
     }
 }
