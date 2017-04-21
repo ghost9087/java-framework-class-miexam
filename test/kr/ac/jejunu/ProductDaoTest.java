@@ -50,7 +50,7 @@ public class ProductDaoTest {
         assertThat(insertedProduct.getId(), is(id));
     }
     @Test
-    public void update() throws SQLException {
+    public void update() throws SQLException, ClassNotFoundException {
         Random random = new Random();
         Long id = random.nextLong() % 2000L;
 
@@ -78,7 +78,7 @@ public class ProductDaoTest {
     }
 
     @Test
-    public void delete() throws SQLException {
+    public void delete() throws SQLException, ClassNotFoundException {
         Random random = new Random();
         Long id = random.nextLong() % 2000L;
 

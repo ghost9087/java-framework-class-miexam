@@ -14,7 +14,7 @@ public class DaoFactory {
     @Bean
     public ProductDao productDao() {
         ProductDao productDao = new ProductDao();
-        productDao.setDataSource(dataSource());
+//        productDao.setDataSource(dataSource());
 
         return productDao;
     }
