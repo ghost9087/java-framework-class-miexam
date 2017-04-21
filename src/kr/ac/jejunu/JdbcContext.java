@@ -12,6 +12,26 @@ import java.sql.SQLException;
 public class JdbcContext {
     private DataSource dataSource;
 
+    public Product queryForObject(String sql, Object[] params) throws SQLException, ClassNotFoundException {
+        return jdbcContextWithStatementForGet(connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(int index = 1; index <= params.length; index++){
+                preparedStatement.setObject(index, params[index-1]);
+            }
+            return preparedStatement;
+        });
+    }
+
+    public void update(String sql, Object[] params) throws SQLException, ClassNotFoundException {
+        jdbcContextWithStatementStrategyForUpdate(connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(int index = 1; index <= params.length; index++){
+                preparedStatement.setObject(index, params[index-1]);
+            }
+            return preparedStatement;
+        });
+    }
+
     public Product jdbcContextWithStatementForGet(StatementStrategy statementStrategy) throws SQLException, ClassNotFoundException {
         Connection connection = null;
         Product product = null;
