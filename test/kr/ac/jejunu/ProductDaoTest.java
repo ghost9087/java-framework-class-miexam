@@ -1,6 +1,8 @@
 package kr.ac.jejunu;
 
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
 import java.util.Random;
@@ -15,9 +17,8 @@ public class ProductDaoTest {
         String title = "제주감귤";
         Integer price = 15000;
 
-
-        DaoFactory daoFactory = new DaoFactory();
-        ProductDao productDao = daoFactory.getProductDao();
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        ProductDao productDao = context.getBean("productDao", ProductDao.class);
 
         Product product = productDao.get(id);
         assertThat(id, is(product.getId()));
@@ -36,8 +37,8 @@ public class ProductDaoTest {
         product.setTitle(title);
         product.setPrice(price);
 
-        DaoFactory daoFactory = new DaoFactory();
-        ProductDao productDao = daoFactory.getProductDao();
+        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        ProductDao productDao = context.getBean("productDao", ProductDao.class);
 
         productDao.add(product);
 
