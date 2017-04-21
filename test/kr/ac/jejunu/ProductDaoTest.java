@@ -15,7 +15,7 @@ public class ProductDaoTest {
         String title = "제주감귤";
         Integer price = 15000;
 
-        JejuProductDao productDao = new JejuProductDao();
+        ProductDao productDao = new JejuProductDao();
         Product product = productDao.get(id);
         assertThat(id, is(product.getId()));
         assertThat(title, is(product.getTitle()));
@@ -33,7 +33,7 @@ public class ProductDaoTest {
         product.setTitle(title);
         product.setPrice(price);
 
-        JejuProductDao productDao = new JejuProductDao();
+        ProductDao productDao = new JejuProductDao();
         productDao.add(product);
 
         Product insertedProduct = productDao.get(id);
@@ -47,7 +47,7 @@ public class ProductDaoTest {
         String title = "제주감귤";
         Integer price = 15000;
 
-        JejuProductDao productDao = new HallaProductDao();
+        ProductDao productDao = new HallaProductDao();
         Product product = productDao.get(id);
         assertThat(id, is(product.getId()));
         assertThat(title, is(product.getTitle()));
@@ -65,7 +65,7 @@ public class ProductDaoTest {
         product.setTitle(title);
         product.setPrice(price);
 
-        JejuProductDao productDao = new HallaProductDao();
+        ProductDao productDao = new HallaProductDao();
         productDao.add(product);
 
         Product insertedProduct = productDao.get(id);
