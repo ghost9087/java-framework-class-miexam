@@ -11,13 +11,16 @@ public class ProductDao {
     }
 
     public Product get(Long id) throws SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = null;
         Product product = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = connection.prepareStatement("select * from product where id = ?");
-            preparedStatement.setLong(1, id);
+            connection = dataSource.getConnection();
+
+            StatementStrategy statementStrategy = new GetProductStatementStrategy();
+            preparedStatement = statementStrategy.makeStatement(id, connection);
+
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()){
                 product = new Product();
@@ -54,14 +57,15 @@ public class ProductDao {
     }
 
     public void add(Product product) throws SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            preparedStatement = connection.prepareStatement("insert into product(id, title, price) VALUES (?, ?, ?)");
-            preparedStatement.setLong(1, product.getId());
-            preparedStatement.setString(2, product.getTitle());
-            preparedStatement.setInt(3, product.getPrice());
+            connection = dataSource.getConnection();
+
+            StatementStrategy statementStrategy = new AddProductStatementStrategy();
+            preparedStatement = statementStrategy.makeStatement(product, connection);
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,14 +87,15 @@ public class ProductDao {
     }
 
     public void update(Product product) throws SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            preparedStatement = connection.prepareStatement("update product set title=?, price=? where id =?");
-            preparedStatement.setString(1, product.getTitle());
-            preparedStatement.setInt(2, product.getPrice());
-            preparedStatement.setLong(3, product.getId());
+            connection = dataSource.getConnection();
+
+            StatementStrategy statementStrategy = new UpdateProductStatementStrategy();
+            preparedStatement = statementStrategy.makeStatement(product, connection);
+
             preparedStatement.executeUpdate();
         } catch (SQLException e){
             throw e;
@@ -111,12 +116,15 @@ public class ProductDao {
     }
 
     public void delete(Long id) throws SQLException {
-        Connection connection = dataSource.getConnection();
+        Connection connection = null;
         PreparedStatement preparedStatement = null;
 
         try {
-            preparedStatement = connection.prepareStatement("delete from product where id=?");
-            preparedStatement.setLong(1, id);
+            connection = dataSource.getConnection();
+
+            StatementStrategy statementStrategy = new DeleteProductStatementStrategy();
+            preparedStatement = statementStrategy.makeStatement(id, connection);
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -134,6 +142,5 @@ public class ProductDao {
                     e.printStackTrace();
                 }
         }
-
     }
 }
