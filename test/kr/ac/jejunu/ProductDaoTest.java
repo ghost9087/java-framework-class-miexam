@@ -15,7 +15,9 @@ public class ProductDaoTest {
         String title = "제주감귤";
         Integer price = 15000;
 
-        ProductDao productDao = new JejuProductDao();
+        ConnectionMaker connectionMaker = new JejuConnectionMaker();
+
+        ProductDao productDao = new ProductDao(connectionMaker);
         Product product = productDao.get(id);
         assertThat(id, is(product.getId()));
         assertThat(title, is(product.getTitle()));
@@ -33,7 +35,8 @@ public class ProductDaoTest {
         product.setTitle(title);
         product.setPrice(price);
 
-        ProductDao productDao = new JejuProductDao();
+        ConnectionMaker connectionMaker = new JejuConnectionMaker();
+        ProductDao productDao = new ProductDao(connectionMaker);
         productDao.add(product);
 
         Product insertedProduct = productDao.get(id);
@@ -47,7 +50,8 @@ public class ProductDaoTest {
         String title = "제주감귤";
         Integer price = 15000;
 
-        ProductDao productDao = new HallaProductDao();
+        ConnectionMaker connectionMaker = new HallaConnectionMaker();
+        ProductDao productDao = new ProductDao(connectionMaker);
         Product product = productDao.get(id);
         assertThat(id, is(product.getId()));
         assertThat(title, is(product.getTitle()));
@@ -65,7 +69,8 @@ public class ProductDaoTest {
         product.setTitle(title);
         product.setPrice(price);
 
-        ProductDao productDao = new HallaProductDao();
+        ConnectionMaker connectionMaker = new HallaConnectionMaker();
+        ProductDao productDao = new ProductDao(connectionMaker);
         productDao.add(product);
 
         Product insertedProduct = productDao.get(id);

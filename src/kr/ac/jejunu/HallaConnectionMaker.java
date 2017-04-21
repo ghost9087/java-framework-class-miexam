@@ -1,13 +1,15 @@
 package kr.ac.jejunu;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * Created by ghost9087 on 21/04/2017.
  */
-public class HallaProductDao extends ProductDao {
+public class HallaConnectionMaker implements ConnectionMaker {
     @Override
-    protected Connection getConnection() throws ClassNotFoundException, SQLException {
+    public Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
         return DriverManager.getConnection("jdbc:mysql://117.17.102.106/jeju", "root", "1234");
     }
