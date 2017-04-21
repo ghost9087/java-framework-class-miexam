@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.Random;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ProductDaoTest {
@@ -18,7 +19,6 @@ public class ProductDaoTest {
         String title = "제주감귤";
         Integer price = 15000;
 
-//        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
         ProductDao productDao = context.getBean("productDao", ProductDao.class);
 
@@ -39,7 +39,6 @@ public class ProductDaoTest {
         product.setTitle(title);
         product.setPrice(price);
 
-//        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
         ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
         ProductDao productDao = context.getBean("productDao", ProductDao.class);
 
@@ -49,5 +48,56 @@ public class ProductDaoTest {
         assertThat(insertedProduct.getTitle(), is(title));
         assertThat(insertedProduct.getPrice(), is(price));
         assertThat(insertedProduct.getId(), is(id));
+    }
+    @Test
+    public void update() throws SQLException {
+        Random random = new Random();
+        Long id = random.nextLong() % 2000L;
+
+        Product product = new Product();
+        product.setId(id);
+        product.setTitle("파스타 소스");
+        product.setPrice(3000);
+
+        ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
+        ProductDao productDao = context.getBean("productDao", ProductDao.class);
+
+        productDao.add(product);
+
+        String title = "피자";
+        Integer price = 50000;
+
+        product.setTitle(title);
+        product.setPrice(price);
+
+        productDao.update(product);
+
+        Product updatedProduct = productDao.get(id);
+        assertThat(updatedProduct.getTitle(), is(title));
+        assertThat(updatedProduct.getPrice(), is(price));
+    }
+
+    @Test
+    public void delete() throws SQLException {
+        Random random = new Random();
+        Long id = random.nextLong() % 2000L;
+
+        Product product = new Product();
+        product.setId(id);
+        product.setTitle("파스타 소스");
+        product.setPrice(3000);
+
+        ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
+        ProductDao productDao = context.getBean("productDao", ProductDao.class);
+
+        productDao.add(product);
+
+        String title = "피자";
+        Integer price = 50000;
+
+        productDao.delete(product.getId());
+
+        Product deletedProduct = productDao.get(id);
+        assertThat(deletedProduct, is(nullValue()));
     }
 }
