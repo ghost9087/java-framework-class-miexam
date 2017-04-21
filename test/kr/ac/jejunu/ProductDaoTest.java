@@ -3,6 +3,7 @@ package kr.ac.jejunu;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.sql.SQLException;
 import java.util.Random;
@@ -17,7 +18,8 @@ public class ProductDaoTest {
         String title = "제주감귤";
         Integer price = 15000;
 
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+//        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
         ProductDao productDao = context.getBean("productDao", ProductDao.class);
 
         Product product = productDao.get(id);
@@ -37,7 +39,8 @@ public class ProductDaoTest {
         product.setTitle(title);
         product.setPrice(price);
 
-        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+//        ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
+        ApplicationContext context = new GenericXmlApplicationContext("daoFactory.xml");
         ProductDao productDao = context.getBean("productDao", ProductDao.class);
 
         productDao.add(product);
